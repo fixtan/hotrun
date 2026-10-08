@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HotRun</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="toolbar">
+    <button id="btnAdd" class="primary">＋ 追加</button>
+    <button id="btnEdit" disabled>編集</button>
+    <button id="btnDelete" class="danger" disabled>削除</button>
+    <div class="spacer"></div>
+    <button id="btnOpenFile" title="設定ファイル（JSON）を関連付けのアプリで開きます">設定ファイルを開く</button>
+    <button id="btnReload" title="設定ファイルを直接編集したときに、読み直します">再読み込み</button>
+  </header>
+
+  <div id="bannerError" class="banner error" hidden></div>
+  <div id="bannerIssues" class="banner" hidden></div>
+
+  <div class="list">
+    <table>
+      <thead><tr><th class="c-on"></th><th class="c-key">ホットキー</th><th>実行内容</th><th class="c-state">状態</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="empty" class="empty" hidden>まだ登録がありません。「＋ 追加」から作れます。</div>
+  </div>
+
+  <footer class="footer">
+    <span id="summary"></span>
+    <span id="path" class="path"></span>
+    <div class="spacer"></div>
+    <label><input type="checkbox" id="chkAutostart"> Windows 起動時に自動で起動</label>
+  </footer>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="dialog" role="dialog" aria-modal="true">
+      <div id="dlgText" class="dlg-text"></div>
+      <div class="dlg-buttons">
+        <button id="dlgCancel">キャンセル</button>
+        <button id="dlgOk" class="primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="common.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

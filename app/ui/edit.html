@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HotRun - 編集</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <div id="msgError" class="msg error" hidden></div>
+    <div id="msgWarn" class="msg warn" hidden></div>
+    <div id="msgOk" class="msg ok" hidden></div>
+
+    <div class="field">
+      <label for="hotkey">ホットキー</label>
+      <div class="row">
+        <input type="text" id="hotkey" class="keybox" readonly placeholder="ここをクリックして、割り当てるキーを押す">
+        <button id="btnClearKey" type="button">クリア</button>
+      </div>
+      <div class="hint" id="keyHint">クリック後に押したキーの組み合わせがそのまま入ります。Esc で取り消し。</div>
+    </div>
+
+    <div class="field">
+      <label for="kind">動作</label>
+      <select id="kind">
+        <option value="run">プログラムを実行（引数を付けられます）</option>
+        <option value="open_file">ファイルを開く（関連付けのアプリで）</option>
+        <option value="open_folder">フォルダを開く</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="target" id="targetLabel">プログラム</label>
+      <div class="row">
+        <input type="text" id="target" spellcheck="false">
+        <button id="btnPickTarget" type="button">参照…</button>
+      </div>
+    </div>
+
+    <div class="field" id="argsField">
+      <label for="args">引数</label>
+      <input type="text" id="args" spellcheck="false">
+      <div class="hint">例: --profile work "C:\My Files\a.txt"</div>
+    </div>
+
+    <div class="field" id="cwdField">
+      <label for="cwd">作業フォルダ</label>
+      <div class="row">
+        <input type="text" id="cwd" spellcheck="false" placeholder="空なら指定なし">
+        <button id="btnPickCwd" type="button">参照…</button>
+      </div>
+    </div>
+
+    <div class="field" id="windowField">
+      <label for="window">ウィンドウ</label>
+      <select id="window">
+        <option value="normal">通常</option>
+        <option value="maximized">最大化</option>
+        <option value="minimized">最小化</option>
+        <option value="hidden">非表示</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="label">名前（任意）</label>
+      <input type="text" id="label" placeholder="空なら、ファイル名を一覧に表示します">
+    </div>
+
+    <div class="field">
+      <label>状態</label>
+      <label class="check"><input type="checkbox" id="enabled"> このホットキーを有効にする</label>
+    </div>
+  </main>
+
+  <div class="buttons">
+    <button id="btnTest" type="button" title="保存せず、いまの入力内容でその場で実行します">テスト実行</button>
+    <div class="spacer"></div>
+    <button id="btnCancel" type="button">キャンセル</button>
+    <button id="btnSave" type="button" class="primary">保存</button>
+  </div>
+
+  <script src="common.js"></script>
+  <script src="edit.js"></script>
+</body>
+</html>

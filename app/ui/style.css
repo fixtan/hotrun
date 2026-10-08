@@ -1,0 +1,135 @@
+:root {
+  color-scheme: dark;
+  --bg: #14161b;
+  --panel: #1b1e25;
+  --line: #2a2e38;
+  --text: #dde2ea;
+  --dim: #8b93a3;
+  --accent: #3b82f6;
+  --sel: #1f2f4d;
+  --sel-line: #3a5fa8;
+  --hover: #20242d;
+  --ok: #5fd08a;
+  --warn-bg: #3a2c12;
+  --warn-text: #f2c56b;
+  --danger: #ff7a7a;
+  --danger-bg: #3a1d1d;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.4 "Segoe UI", "Yu Gothic UI", "Meiryo UI", system-ui, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+}
+input, select { user-select: text; -webkit-user-select: text; }
+
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: var(--hover); border-color: #3a4050; }
+button:disabled { opacity: .45; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.primary:hover:not(:disabled) { background: #5a98ff; }
+button.danger { color: var(--danger); }
+
+.dim { color: var(--dim); }
+.spacer { flex: 1; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.banner {
+  padding: 8px 12px;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-bottom: 1px solid var(--line);
+  white-space: pre-wrap;
+}
+.banner.error { background: var(--danger-bg); color: var(--danger); }
+
+/* ---- 一覧 ---- */
+.list { flex: 1; overflow: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  position: sticky; top: 0;
+  text-align: left; font-weight: 600; color: var(--dim);
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  padding: 6px 10px;
+}
+tbody td { padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tbody tr { cursor: default; }
+tbody tr:hover { background: var(--hover); }
+tbody tr.sel { background: var(--sel); box-shadow: inset 3px 0 0 var(--sel-line); }
+tbody tr.off td:not(.c-on) { opacity: .5; }
+.c-on { width: 34px; text-align: center; }
+.c-key { width: 190px; white-space: nowrap; }
+.c-state { width: 230px; }
+.c-what { max-width: 0; }
+.c-what .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.c-what .cmd { color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+kbd {
+  font: 12px/1 "Cascadia Mono", Consolas, monospace;
+  background: var(--panel); border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 4px; padding: 3px 7px; display: inline-block;
+}
+.state { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.state.ok { color: var(--ok); }
+.state.ng { color: var(--danger); }
+.state.warn { color: var(--warn-text); }
+.state.off { color: var(--dim); }
+.empty { padding: 40px 20px; text-align: center; color: var(--dim); }
+
+.footer {
+  display: flex; align-items: center; gap: 14px;
+  padding: 7px 12px; border-top: 1px solid var(--line); background: var(--panel);
+  color: var(--dim); font-size: 12px;
+}
+.footer label { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+.footer .path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+/* ---- 編集 ---- */
+.page { flex: 1; overflow: auto; padding: 16px 18px; }
+.field { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; align-items: center; margin-bottom: 12px; }
+.field > label { color: var(--dim); }
+.field .hint { grid-column: 2; color: var(--dim); font-size: 12px; margin-top: -2px; }
+.row { display: flex; gap: 6px; }
+.row > input { flex: 1; min-width: 0; }
+input[type=text], select {
+  font: inherit; color: var(--text); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 5px; padding: 6px 8px; width: 100%;
+}
+input[type=text]:focus, select:focus { outline: none; border-color: var(--accent); }
+input.keybox { font: 14px "Cascadia Mono", Consolas, monospace; cursor: pointer; caret-color: transparent; }
+input.keybox.capturing { border-color: var(--accent); background: var(--sel); }
+.check { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.msg { margin: 0 0 12px; padding: 8px 10px; border-radius: 5px; white-space: pre-wrap; }
+.msg.error { background: var(--danger-bg); color: var(--danger); }
+.msg.warn { background: var(--warn-bg); color: var(--warn-text); }
+.msg.ok { background: #16301f; color: var(--ok); }
+.buttons { display: flex; gap: 8px; padding: 10px 18px; border-top: 1px solid var(--line); background: var(--panel); }
+
+/* ---- 確認ダイアログ（WebView 標準の confirm/alert は使わない） ---- */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 10; }
+.dialog { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; width: min(440px, 90vw); }
+.dlg-text { white-space: pre-wrap; margin-bottom: 16px; user-select: text; -webkit-user-select: text; }
+.dlg-buttons { display: flex; justify-content: flex-end; gap: 8px; }

@@ -1,0 +1,6 @@
+target/
+node_modules/
+/config.json
+/HKLaunch.csv
+.history/
+app/gen/

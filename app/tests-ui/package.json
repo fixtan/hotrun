@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "test": "node --test common.test.js",
-    "test:dom": "node dom/main.test.js && node dom/edit.test.js"
+    "test:dom": "node dom/main.test.js && node dom/edit.test.js && node dom/scan.test.js"
   },
   "devDependencies": {
     "jsdom": "^29.1.1"

@@ -255,6 +255,42 @@ fn test_entry(input: EntryInput) -> Result<(), String> {
     execute(&entry)
 }
 
+/// 他のアプリが使っているホットキーを洗い出す（キーは押さない）。HotRun が取れているキーは「HotRun」に分ける。
+#[tauri::command]
+async fn scan_hotkeys(st: State<'_, AppState>) -> Result<Vec<hotrun_core::scan::Taken>, String> {
+    let own: Vec<hotrun_core::Hotkey> = {
+        let store = lock(&st.store);
+        let failed = lock(&st.status).failed.clone();
+        store
+            .config()
+            .entries
+            .iter()
+            .filter(|e| e.enabled && !failed.iter().any(|f| f.id == e.id))
+            .map(|e| e.hotkey)
+            .collect()
+    };
+    // RegisterHotKey は呼んだスレッドに紐づくので、専用のスレッドで走らせる
+    tauri::async_runtime::spawn_blocking(move || scan_impl(&own)).await.map_err(|e| e.to_string())?
+}
+
+/// 使用中キーの一覧ウィンドウを開く（開いていれば前面に出す）
+#[tauri::command]
+async fn open_scan(app: AppHandle) -> Result<(), String> {
+    if let Some(w) = app.get_webview_window("scan") {
+        let _ = w.unminimize();
+        let _ = w.set_focus();
+        return Ok(());
+    }
+    WebviewWindowBuilder::new(&app, "scan", WebviewUrl::App("scan.html".into()))
+        .title(format!("{APP_NAME} - 使用中のキー一覧"))
+        .inner_size(640.0, 640.0)
+        .min_inner_size(480.0, 360.0)
+        .center()
+        .build()
+        .map(|_| ())
+        .map_err(|e| format!("ウィンドウを開けません: {e}"))
+}
+
 #[tauri::command]
 fn close_self(window: WebviewWindow) {
     let _ = window.close();
@@ -269,6 +305,16 @@ fn execute(e: &hotrun_core::Entry) -> Result<(), String> {
 #[cfg(not(windows))]
 fn execute(_: &hotrun_core::Entry) -> Result<(), String> {
     Err("実行は Windows でのみ使えます".into())
+}
+
+#[cfg(windows)]
+fn scan_impl(own: &[hotrun_core::Hotkey]) -> Result<Vec<hotrun_core::scan::Taken>, String> {
+    let taken = hotrun_core::win::scan_taken(&hotrun_core::scan::candidates());
+    Ok(hotrun_core::scan::build(&taken, own))
+}
+#[cfg(not(windows))]
+fn scan_impl(_: &[hotrun_core::Hotkey]) -> Result<Vec<hotrun_core::scan::Taken>, String> {
+    Err("Windows でのみ使えます".into())
 }
 
 #[cfg(windows)]
@@ -375,6 +421,8 @@ pub fn run() {
             set_autostart,
             pick_path,
             test_entry,
+            scan_hotkeys,
+            open_scan,
             close_self,
         ])
         .on_window_event(|window, event| match event {

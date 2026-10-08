@@ -10,6 +10,7 @@ const USAGE: &str = "hotrun — ホットキーランチャー（設定は JSON�
 使い方:
   hotrun list   [--config FILE]            登録内容を一覧表示
   hotrun check  [--config FILE]            重複・予約キーなどの問題を検査
+  hotrun scan   [--config FILE]            他のアプリが使っているホットキーを洗い出す（キーは押さない）
   hotrun check  --live [--config FILE]     実際に登録を試して、取れないキーを検出（Windows）
   hotrun import HKLAUNCH.csv [-o FILE]     HKLaunch の CSV を JSON に変換
   hotrun run    [--config FILE]            ホットキーを登録して待ち受け（Windows。Ctrl+C で終了）
@@ -107,6 +108,35 @@ fn run() -> Result<u8, String> {
                 println!("注意: {i}");
             }
             Ok(0)
+        }
+        "scan" => {
+            // 他のアプリが使っているホットキーの洗い出し（キーは押さない）
+            #[cfg(windows)]
+            {
+                // 設定にあるキーは「HotRun のもの」として分ける（hotrun-app 等が動いていればそれが取っている）
+                let own: Vec<hotrun_core::Hotkey> = Config::load(&cfg_path)
+                    .map(|c| c.entries.iter().filter(|e| e.enabled).map(|e| e.hotkey).collect())
+                    .unwrap_or_default();
+                let taken = win::scan_taken(&hotrun_core::scan::candidates());
+                let list = hotrun_core::scan::build(&taken, &own);
+                for (class, title) in [
+                    (hotrun_core::scan::Class::HotRun, "HotRun の設定にあるキー"),
+                    (hotrun_core::scan::Class::Win, "Win キーを含む組み合わせ（Windows 標準、または PowerToys など）"),
+                    (hotrun_core::scan::Class::Other, "他のアプリが使用中（どのアプリかは Windows から分かりません）"),
+                ] {
+                    let items: Vec<&str> = list.iter().filter(|t| t.class == class).map(|t| t.hotkey.as_str()).collect();
+                    println!("\n■ {title}: {} 件", items.len());
+                    for k in items {
+                        println!("  {k}");
+                    }
+                }
+                println!("\n合計 {} 件", list.len());
+                Ok(0)
+            }
+            #[cfg(not(windows))]
+            {
+                Err("scan は Windows でのみ使えます".to_string())
+            }
         }
         "run" => {
             let cfg = Config::load(&cfg_path).map_err(|e| format!("{}: {e}", cfg_path.display()))?;

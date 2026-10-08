@@ -223,3 +223,27 @@ pub fn set_autostart(app_name: &str, enable: Option<&str>) -> Result<(), String>
         result
     }
 }
+
+/// 走査用の ID（アプリが使える範囲は 0x0000〜0xBFFF）
+const SCAN_ID: i32 = 0xBFFF;
+
+/// 候補を 1 つずつ登録してみて、「すでに使用中」で断られたものを返す。
+/// 取れたものはすぐに解除する。キーは押さないので、他のアプリの動作が実行されることはない。
+/// RegisterHotKey は呼んだスレッドに紐づくので、専用のスレッドから呼ぶこと。
+pub fn scan_taken(candidates: &[crate::Hotkey]) -> Vec<crate::Hotkey> {
+    let mut taken = vec![];
+    for h in candidates {
+        let mods = HOT_KEY_MODIFIERS(h.mods) | MOD_NOREPEAT;
+        match unsafe { RegisterHotKey(HWND::default(), SCAN_ID, mods, h.vk) } {
+            Ok(()) => unsafe {
+                let _ = UnregisterHotKey(HWND::default(), SCAN_ID);
+            },
+            Err(err) => {
+                if err.code() == windows::core::HRESULT::from_win32(ALREADY_REGISTERED) {
+                    taken.push(*h);
+                }
+            }
+        }
+    }
+    taken
+}

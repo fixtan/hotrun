@@ -155,11 +155,12 @@ const names = (calls) => calls.map((c) => c[0]);
   // 10. 設定ファイルを開く・再読み込み・自動起動
   s = await boot();
   s.d.getElementById('btnOpenFile').click();
+  s.d.getElementById('btnScan').click();
   s.d.getElementById('btnReload').click();
   await sleep(30);
   const ch = s.d.getElementById('chkAutostart'); ch.checked = true; ch.dispatchEvent(new s.w.Event('change', { bubbles: true }));
   await sleep(30);
-  assert.ok(names(s.calls).includes('open_config_file') && names(s.calls).includes('reload_config'));
+  assert.ok(names(s.calls).includes('open_config_file') && names(s.calls).includes('reload_config') && names(s.calls).includes('open_scan'));
   assert.deepStrictEqual(s.calls.find((c) => c[0] === 'set_autostart'), ['set_autostart', { enable: true }]);
   ok('設定ファイルを開く／再読み込み／自動起動');
 

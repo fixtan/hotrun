@@ -149,6 +149,7 @@
   $('btnAdd').addEventListener('click', () => edit(''));
   $('btnEdit').addEventListener('click', () => selected && edit(selected));
   $('btnDelete').addEventListener('click', del);
+  $('btnScan').addEventListener('click', () => guarded(() => invoke('open_scan')));
   $('btnOpenFile').addEventListener('click', () => guarded(() => invoke('open_config_file')));
   $('btnReload').addEventListener('click', async () => {
     try { await invoke('reload_config'); } catch (e) { /* 失敗は画面上のバナーに出る */ }

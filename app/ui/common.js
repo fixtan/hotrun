@@ -9,6 +9,7 @@
     35: 'End', 36: 'Home', 37: 'Left', 38: 'Up', 39: 'Right', 40: 'Down', 44: 'PrintScreen', 45: 'Insert', 46: 'Delete',
     96: 'Num0', 97: 'Num1', 98: 'Num2', 99: 'Num3', 100: 'Num4', 101: 'Num5', 102: 'Num6', 103: 'Num7', 104: 'Num8', 105: 'Num9',
     106: 'Num*', 107: 'Num+', 109: 'Num-', 110: 'Num.', 111: 'Num/',
+    166: 'BrowserBack', 167: 'BrowserForward', 168: 'BrowserRefresh', 169: 'BrowserStop', 170: 'BrowserSearch', 171: 'BrowserFavorites', 172: 'BrowserHome', 173: 'VolumeMute', 174: 'VolumeDown', 175: 'VolumeUp', 176: 'MediaNext', 177: 'MediaPrev', 178: 'MediaStop', 179: 'MediaPlayPause', 180: 'LaunchMail', 181: 'LaunchMedia', 182: 'LaunchApp1', 183: 'LaunchApp2',
     186: ';', 187: '=', 188: ',', 189: '-', 190: '.', 191: '/', 192: '`', 219: '[', 220: '\\', 221: ']', 222: "'",
   };
   const MODIFIER_CODES = new Set([16, 17, 18, 91, 92, 93]); // Shift, Ctrl, Alt, Win(左右), Menu

@@ -133,3 +133,17 @@ input.keybox.capturing { border-color: var(--accent); background: var(--sel); }
 .dialog { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; width: min(440px, 90vw); }
 .dlg-text { white-space: pre-wrap; margin-bottom: 16px; user-select: text; -webkit-user-select: text; }
 .dlg-buttons { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* ---- 使用中のキー一覧 ---- */
+.toolbar input[type=text] { width: 260px; }
+.group { margin-bottom: 14px; }
+.group > summary { cursor: pointer; font-weight: 600; margin-bottom: 6px; }
+.group .note { margin: 0 0 8px; }
+.rows { border: 1px solid var(--line); border-radius: 6px; }
+.row { display: flex; gap: 12px; padding: 8px 10px; align-items: flex-start; }
+.row + .row { border-top: 1px solid var(--line); }
+.row:nth-child(even) { background: rgba(255,255,255,.03); }
+.row .mods { flex: 0 0 130px; font-weight: 600; padding-top: 3px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+.row kbd { min-width: 22px; text-align: center; }
+kbd.mine { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }

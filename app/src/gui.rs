@@ -463,7 +463,7 @@ pub fn run() {
                 .title(APP_NAME)
                 .inner_size(900.0, 580.0)
                 .min_inner_size(640.0, 360.0)
-                .visible(!hidden)
+                .visible(false) // 非表示
                 .build()?;
             Ok(())
         })
